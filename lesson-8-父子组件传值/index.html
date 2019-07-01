@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<div id="app">
+<!--这里会有一个坑,这样是不能显示的，因为父组件虽然是itemChild，但是实际到达子组件时候会变成itemchild，导致数据不对等，应该第二种方法-->
+    <ul>
+        <my-component-li v-for="itemParent in items" v-bind:itemChild="itemParent"></my-component-li>
+    </ul>
+    <br>
+    <br>
+    <ul>
+        <my-component-li v-for="itemParent in items" v-bind:item-child="itemParent"></my-component-li>
+    </ul>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+<script type="text/javascript">
+<!--一定要放置在vm前面,不然子组件会失效-->
+    Vue.component("my-component-li",{
+        props: ['itemChild'],
+        template: '<li>{{itemChild}}</li>'
+    });
+    var vm = new Vue({
+        el: "#app",
+        data: {
+            items: ['张三','李四','王五']
+        }
+    })
+</script>
+</body>
+</html>

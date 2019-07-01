@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+
+<div id="app">
+    <div>当前时间: {{getCurrentTime()}}</div>
+    <div>计算属性: {{getCompCurrentTime}}</div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+<script type="text/javascript">
+        var vm = new Vue({
+            el: '#app',
+            methods: {
+                getCurrentTime: function(){
+                    return Date.now()
+                }
+            },
+            //计算属性内的值，不能同methods内的方法名字相同
+            //使用控制台来查看数据，会发现计算属性值保持不变
+            computed: {
+                getCompCurrentTime: function(){
+                    return Date.now()
+                }
+            }
+        })
+</script>
+</body>
+</html>

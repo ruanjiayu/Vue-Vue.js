@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<div id="app">
+    <todo>
+        <todo-title slot="slot-name-todo-title" :child-title="title"></todo-title>
+        <todo-items slot="slot-name-todo-items" v-for="(item,index) in todoItems" :child-item="item" :child-index="index" @myself-remove="parentRemove"></todo-items>
+    </todo>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+<script type="text/javascript">
+    Vue.component('todo',{
+        template: "<div>\
+                <slot name='slot-name-todo-title'></slot>\
+                <ul>\
+                      <slot name='slot-name-todo-items'></slot>\
+                </ul>\
+                </div>\
+                "
+    })
+    Vue.component('todo-title', {
+        props: ['childTitle'],
+        template: "<div>{{childTitle}}</div>"
+    })
+    Vue.component('todo-items', {
+        props: ["childItem","childIndex"],
+        template: "<li>{{childIndex}}-------{{childItem}}---<button @click='remove(childIndex);'>删除</button></li>",
+        methods: {
+            remove: function(index){
+                // this.$parent.$parent.parentRemove() 可以采用这样的方式
+                //自己定义事件，注意不能使用驼峰命令，但是可以使用myself-remove,remove
+                index = index + 1
+                this.$emit("myself-remove",index)
+            }
+        }
+    })
+    var vm = new Vue({
+        el: '#app',
+        data: {
+           title: '标题',
+            todoItems: ['张三','李四','王五']
+        },
+        methods: {
+            //使用emit来进行操作的话，调用父组件的方法是不需要使用parentRemove(index),只需要使用parentRemove,参数会传递过来。
+            parentRemove: function(index){
+                console.log("parent"+index)
+                this.todoItems.splice(index,1)
+            }
+        }
+    })
+</script>
+</body>
+</html>
